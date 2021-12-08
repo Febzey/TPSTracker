@@ -7,7 +7,7 @@ export default function connect() {
             host: process.env.dbHost,
             user: process.env.dbUser,
             password: process.env.dbPass,
-            database: process.env.dbDatabase
+            database: process.env.DbDatabase
         })
 
         database.getConnection((error: unknown) => {

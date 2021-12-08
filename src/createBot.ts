@@ -22,9 +22,5 @@ export default function startBot() {
             clearTimeout(timeout);
             resolve(bot);
         });
-
-
-
-
     });
 }
