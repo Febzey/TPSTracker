@@ -31,17 +31,35 @@ import chalk from 'chalk';
         });
     };
 
-
+    /**
+     * Getting and storing TPS
+     * every 2 minutes.
+     */
     setInterval(() => {
         logTps();
-    },60000)
+    },2 * 60000)
+
+
+    /**
+     * Getting total player count
+     * and storing it every 5 minutes.
+     */
+    setInterval(() => {
+
+        const playerCount: number = Object.keys(bot.players).length;
+        database.query('INSERT INTO playercount (count , time) VALUES (?,?)', [playerCount, Date.now()], (err: unknown) => {
+            if (err) throw err;
+        });
+
+    },5 * 60000)
 
     bot.on('end' || 'kicked', () => {
         console.warn(chalk.yellow("Bot has ended. process will now exit."));
         process.exit(0);
     });
 
-    let cooldown = new Set();
+    let cooldown = new Set<string>();
+
     bot.on("chat", (user: string, msg: string)=>{
         if(user === bot.username) return;
         if(msg === 'TPS'.toLocaleLowerCase()) {
