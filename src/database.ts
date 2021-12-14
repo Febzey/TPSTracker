@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import { createPool } from 'mysql';
-export default function connect() {
+const connect = () => {
     return new Promise(resolve => {
 
         const database = createPool({
@@ -21,3 +21,5 @@ export default function connect() {
 
     })
 }
+
+export default connect;

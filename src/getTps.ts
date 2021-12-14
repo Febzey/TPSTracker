@@ -1,7 +1,7 @@
-export default function TPS(bot:any) {
+const TPS = (bot: any) => {
   
-    let time = parseInt(bot.time.age);
-    const calcTps = [];
+    let time: number = parseInt(bot.time.age);
+    const calcTps: number[] = [];
 
     function run (bot:any) {
         time = parseInt(bot.time.age);
@@ -22,9 +22,11 @@ export default function TPS(bot:any) {
 
     run(bot);
 
-    bot.getTps = function() {
+    bot.getTps = () => {
         return calcTps.filter(tps => tps === 20).length
     }
     
 
 };
+
+export default TPS;

@@ -3,46 +3,52 @@ import connect from './database.js';
 import TPS from './getTps.js';
 import chalk from 'chalk';
 
+//TODO: Get lowest tps and store it until another lowest tps is achieved.
+
+//TODO: Create lowest recorded tps command
+
+//TODO: bot restart, check if values exists, if not then restart them (database)
+
 (async () => {
 
-    const database:any = await connect();
-
+    const database: any = await connect();
     if (!database) return () => {
         console.error(chalk.red("Could not connect to the database"));
         console.error(chalk.red("Exiting...."));
-        return process.exit(1);
+        process.exit(1);
     }
+
     console.log(chalk.green("Connection made to database successfully."));
 
 
 
-    const bot:any = await startBot();
+    const bot: any = await startBot();
     console.log(chalk.green("Mineflayer bot has logged in successfully."))
 
 
     bot.loadPlugin(TPS);
 
 
-    const logTps = async () => {
-       if (process.uptime() / 60 < 1) return;
+    const logTps = () => {
+        if (process.uptime() / 60 < 1) return;
         console.log(bot.getTps(), " ", Date.now());
-        database.query('INSERT INTO TPS (tps, time) VALUES (?,?)', [parseInt(bot.getTps()), Date.now()], (err:unknown) => {
+        database.query('INSERT INTO TPS (tps, time) VALUES (?,?)', [parseInt(bot.getTps()), Date.now()], (err: unknown) => {
             if (err) throw err;
         });
     };
 
     /**
      * Getting and storing TPS
-     * every 2 minutes.
+     * every 4 minutes.
      */
     setInterval(() => {
         logTps();
-    },2 * 60000)
+    }, 4 * 60000)
 
 
     /**
      * Getting total player count
-     * and storing it every 5 minutes.
+     * and storing it every 10 minutes.
      */
     setInterval(() => {
 
@@ -51,7 +57,7 @@ import chalk from 'chalk';
             if (err) throw err;
         });
 
-    },5 * 60000)
+    }, 10 * 60000)
 
     bot.on('end' || 'kicked', () => {
         console.warn(chalk.yellow("Bot has ended. process will now exit."));
@@ -60,17 +66,17 @@ import chalk from 'chalk';
 
     let cooldown = new Set<string>();
 
-    bot.on("chat", (user: string, msg: string)=>{
-        if(user === bot.username) return;
-        if(msg === 'TPS'.toLocaleLowerCase()) {
-            
+    bot.on("chat", (user: string, msg: string) => {
+        if (user === bot.username) return;
+        if (msg === 'TPS'.toLocaleLowerCase()) {
+
             if (cooldown.has(bot.username)) {
-                bot.whisper(user, "Anti spam, wait 3 seconds.");
-                return setTimeout(() => { cooldown.delete(bot.username) }, 3000)
-            }
+                return bot.whisper(user, "Anti spam, wait 2 seconds.");
+            };
 
             cooldown.add(bot.username);
-            
+            setTimeout(() => { cooldown.delete(bot.username) }, 2000)
+
             if (process.uptime() / 60 < 1) return bot.whisper(user, "TPS not calculated yet")
             return bot.whisper(user, `${bot.getTps()}`);
 

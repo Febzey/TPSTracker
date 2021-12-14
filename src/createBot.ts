@@ -1,7 +1,7 @@
 import mineflayer from "mineflayer";
 import 'dotenv/config';
 
-export default function startBot() {
+const startBot = () => {
 
     return new Promise(resolve => {
 
@@ -24,3 +24,5 @@ export default function startBot() {
         });
     });
 }
+
+export default startBot;
