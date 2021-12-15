@@ -59,9 +59,20 @@ const notConnected = (string: string) => console.error(chalk.red(`Database is no
             setTimeout(() => { cooldown.delete(bot.username) }, 2000)
             if (process.uptime() / 60 < 1) return bot.whisper(user, "TPS not calculated yet");
             const TPS = min().toString().split(",");
-            let Tps = parseInt(TPS[0]) !== 20 ? `Lowest Recorded Tps: ${TPS[0]} at ${new Date(parseInt(TPS[1])).toLocaleTimeString("en-US")} CDT` : " ";
-            return bot.whisper(user, `Current: ${bot.getTps()} | ${Tps}`);
+            let Tps = parseInt(TPS[0]) !== 20 ? `Lowest Recorded: ${TPS[0]} at ${new Date(parseInt(TPS[1])).toLocaleTimeString("en-US")} CDT` : " ";
+            return bot.whisper(user, `TPS: ${bot.getTps()} | ${Tps}`);
         }
+
+        if (msg === '!tps') {
+            if (cooldown.has(bot.username)) return bot.whisper(user, "Anti spam, wait 2 seconds.");
+            cooldown.add(bot.username);
+            setTimeout(() => { cooldown.delete(bot.username) }, 2000)
+            if (process.uptime() / 60 < 1) return bot.whisper(user, "TPS not calculated yet");
+            const TPS = min().toString().split(",");
+            let Tps = parseInt(TPS[0]) !== 20 ? `Lowest Recorded: ${TPS[0]} at ${new Date(parseInt(TPS[1])).toLocaleTimeString("en-US")} CDT` : " ";
+            return bot.chat(`TPS: ${bot.getTps()} | ${Tps}`);
+        }
+
     });
     const exit = () => { console.warn("Bot has ended. Exiting..."); process.exit(1) };
     bot.on('end' || 'kicked', exit);
