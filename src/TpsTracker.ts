@@ -53,22 +53,16 @@ const notConnected = (string: string) => console.error(chalk.red(`Database is no
 
     bot.on("chat", (user: string, msg: string) => {
         if (user === bot.username) return;
-
         if (msg === 'tps') {
-
             if (cooldown.has(bot.username)) return bot.whisper(user, "Anti spam, wait 2 seconds.");
             cooldown.add(bot.username);
             setTimeout(() => { cooldown.delete(bot.username) }, 2000)
-
             if (process.uptime() / 60 < 1) return bot.whisper(user, "TPS not calculated yet");
-
             const TPS = min().toString().split(",");
-            return bot.whisper(user, `Current: ${bot.getTps()} | Lowest Recorded Tps: ${TPS[0]} at ${new Date(parseInt(TPS[1])).toLocaleTimeString("en-US")} CDT`);
-
+            let Tps = parseInt(TPS[0]) !== 20 ? `Lowest Recorded Tps: ${TPS[0]} at ${new Date(parseInt(TPS[1])).toLocaleTimeString("en-US")} CDT` : " ";
+            return bot.whisper(user, `Current: ${bot.getTps()} | ${Tps}`);
         }
     });
-
     const exit = () => { console.warn("Bot has ended. Exiting..."); process.exit(1) };
     bot.on('end' || 'kicked', exit);
-
 })();   
