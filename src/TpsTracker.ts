@@ -48,7 +48,6 @@ const notConnected = (string: string) => console.error(chalk.red(`Database is no
 
     setInterval(async () => {
         if (process.uptime() / 60 < 1) return;
-        console.log(bot.getTps() + " Tps");
         tps.push([bot.getTps(), Date.now()]);
     }, 1000);
 
