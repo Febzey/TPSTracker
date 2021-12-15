@@ -23,7 +23,7 @@ const notConnected = (string: string) => console.error(chalk.red(`Database is no
     setInterval(() => {
         if (!database) return notConnected("TPS");
         console.log(bot.getTps(), " ", Date.now());
-        database.query('INSERT INTO TPS (tps, time) VALUES (?,?)', [parseInt(bot.getTps()), Date.now()], (err: unknown) => {
+        database.query('INSERT INTO Tps (tps, time) VALUES (?,?)', [parseInt(bot.getTps()), Date.now()], (err: unknown) => {
             if (err) throw err;
         });
     }, 5 * 60000);
@@ -35,7 +35,7 @@ const notConnected = (string: string) => console.error(chalk.red(`Database is no
     setInterval(() => {
         if (!database) return notConnected("Player Count");
         const playerCount: number = Object.keys(bot.players).length;
-        database.query('INSERT INTO playercount (count , time) VALUES (?,?)', [playerCount, Date.now()], (err: unknown) => {
+        database.query('INSERT INTO Playercount (count , time) VALUES (?,?)', [playerCount, Date.now()], (err: unknown) => {
             if (err) throw err;
         });
 
