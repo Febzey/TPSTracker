@@ -3,7 +3,7 @@ const TPS = (bot: any) => {
     let time: number = parseInt(bot.time.age);
     const calcTps: number[] = [];
 
-    function run (bot:any) {
+    const run = (bot:any) => {
         time = parseInt(bot.time.age);
 
         setTimeout(() => {

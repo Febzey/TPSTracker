@@ -1,9 +1,9 @@
 import 'dotenv/config';
-import { createPool } from 'mysql';
+import { createPool, Pool } from 'mysql';
 const connect = () => {
     return new Promise(resolve => {
 
-        const database = createPool({
+        const database:Pool = createPool({
             host: process.env.dbHost,
             user: process.env.dbUser,
             password: process.env.dbPass,
