@@ -26,7 +26,7 @@ const notConnected = (string: string) => console.error(chalk.red(`Database is no
         database.query('INSERT INTO TPS (tps, time) VALUES (?,?)', [parseInt(bot.getTps()), Date.now()], (err: unknown) => {
             if (err) throw err;
         });
-    }, 0 * 10000);
+    }, 5 * 60000);
 
     /**
      * Getting total player count
@@ -39,7 +39,7 @@ const notConnected = (string: string) => console.error(chalk.red(`Database is no
             if (err) throw err;
         });
 
-    }, 20 * 60000)
+    }, 20 * 60000);
 
     let cooldown = new Set<string>();
     let tps: [number, number][] = [];
@@ -70,6 +70,6 @@ const notConnected = (string: string) => console.error(chalk.red(`Database is no
     });
 
     const exit = () => { console.warn("Bot has ended. Exiting..."); process.exit(1) };
-    bot.on('end' || 'kicked', exit());
+    bot.on('end' || 'kicked', exit);
 
 })();   
